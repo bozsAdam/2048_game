@@ -6,12 +6,11 @@ import getch as z
 import myprints
 
 
-row_1 = [2, 16, 2, 0]
-row_2 = [4, 8, 4, 0]
-row_3 = [8, 4, 8, 0]
-row_4 = [16, 2, 16, 0]
+row_1 = [0, 0, 0, 0]
+row_2 = [0, 0, 0, 0]
+row_3 = [0, 0, 0, 0]
+row_4 = [0, 0, 0, 0]
 
-g = 0
 name = ("")
 action = 0
 
@@ -43,9 +42,8 @@ def clear_table():
         row_4[x] = 0
 
 
-def check_if_gameover():
+def check_if_gameover(matrix):
 
-    matrix = [row_1, row_2, row_3, row_4]
     check_zero = []
     for x in range(0, 4):
         check_zero.append(row_1[x])
@@ -65,8 +63,7 @@ def check_if_gameover():
         myprints.print_table(row_1, row_2, row_3, row_4, current_score)
         myprints.game_over_print()
         time.sleep(3)
-        global g
-        g = g + 1
+        return True
 
 
 def number_generator():
@@ -200,15 +197,15 @@ def right_reaction(matrix,action,temp_score):
     return [action,temp_score]
 
 
-q = 0
+quit = False
 
-while q < 1:
+while quit is not True:
     os.system("cls" if os.name == "nt" else "clear")
     myprints.welcome_print()
     start_input = input(
         "Press 'h' for high scores, 'q' to quit or any other key to begin:")
     if start_input == "q":
-        q = q + 1
+        quit = True
     elif start_input == "h":
         read_high_score()
         back_wards = input("Press any key to go back to the main menu:")
@@ -220,9 +217,9 @@ while q < 1:
         number_generator()
         number_generator()
         current_score = 0
-        g = 0
+        game_over = False
         os.system("cls" if os.name == "nt" else "clear")
-        while g < 1:
+        while game_over is not True:
             action = 0
             myprints.print_table(row_1, row_2, row_3, row_4, current_score)
             print("Please press 'w','a','s' or 'd':")
@@ -246,4 +243,4 @@ while q < 1:
 
             if action > 0:
                 number_generator()
-                check_if_gameover()
+                game_over = check_if_gameover(matrix)
