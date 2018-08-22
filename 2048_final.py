@@ -4,7 +4,6 @@ import time
 import itertools
 import getch as z
 import myprints
-import reaction
 
 
 row_1 = [2, 16, 2, 0]
@@ -105,283 +104,100 @@ def number_generator():
             rand_4 = random.choice(nulls_places[3])
             row_4[rand_4] = random.choice(two_or_four)
 
-
-def w_reaction():
+def up_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+    
     while i < 3:
-        for x in range(0, 4):
-            if row_1[x] == 0 and row_2[x] != 0:
-                row_1[x] = row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                action = action + 1
-            elif row_1[x] == row_2[x] and row_1[x] != 0 and [1, x] not in occupied_block and [2, x] not in occupied_block:
-                row_1[x] = row_1[x] + row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                occupied_block.append([1, x])
-                current_score = current_score + row_1[x]
-                action = action + 1
-
-            if row_2[x] == 0 and row_3[x] != 0:
-                row_2[x] = row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                action = action + 1
-            elif row_2[x] == row_3[x] and row_2[x] != 0 and [2, x] not in occupied_block and [3, x] not in occupied_block:
-                row_2[x] = row_2[x] + row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                occupied_block.append([2, x])
-                current_score = current_score + row_2[x]
-                action = action + 1
-
-            if row_3[x] == 0 and row_4[x] != 0:
-                row_3[x] = row_4[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[x] = 0
-                action = action + 1
-            elif row_3[x] == row_4[x] and row_3[x] != 0 and [3, x] not in occupied_block and [4, x] not in occupied_block:
-                row_3[x] = row_3[x] + row_4[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[x] = 0
-                occupied_block.append([3, x])
-                current_score = current_score + row_3[x]
-                action = action + 1
+        for row, column in itertools.product(range(1, 4), range(0, 4)):
+            if matrix[row - 1][column] == 0 and matrix[row][column] != 0:
+                matrix[row - 1][column] = matrix[row][column]
+                matrix[row][column] = 0
+                action += 1
+                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row - 1][column] == matrix[row][column] and matrix[row - 1][column] != 0 
+                and [row - 1, column] not in occupied_block and [row, column] not in occupied_block):
+                    matrix[row - 1][column] = matrix[row - 1][column] + matrix[row][column]
+                    matrix[row][column] = 0
+                    occupied_block.append([row - 1, column])
+                    temp_score +=  matrix[row - 1][column]
+                    action += 1
+                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
+    return [action,temp_score]
 
 
-def s_reaction():
+def down_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+    
     while i < 3:
-        for x in range(0, 4):
-            if row_4[x] == 0 and row_3[x] != 0:
-                row_4[x] = row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                action = action + 1
-            elif row_3[x] == row_4[x] and row_3[x] != 0 and [3, x] not in occupied_block and [4, x] not in occupied_block:
-                row_4[x] = row_3[x] + row_4[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                occupied_block.append([4, x])
-                current_score = current_score + row_4[x]
-                action = action + 1
-
-            if row_3[x] == 0 and row_2[x] != 0:
-                row_3[x] = row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                action = action + 1
-            elif row_2[x] == row_3[x] and row_2[x] != 0 and [2, x] not in occupied_block and [3, x] not in occupied_block:
-                row_3[x] = row_2[x] + row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                occupied_block.append([3, x])
-                current_score = current_score + row_3[x]
-                action = action + 1
-
-            if row_2[x] == 0 and row_1[x] != 0:
-                row_2[x] = row_1[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[x] = 0
-                action = action + 1
-            elif row_1[x] == row_2[x] and row_1[x] != 0 and [1, x] not in occupied_block and [2, x] not in occupied_block:
-                row_2[x] = row_1[x] + row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[x] = 0
-                occupied_block.append([2, x])
-                current_score = current_score + row_2[x]
-                action = action + 1
+        for row, column in itertools.product(range(0, 3), range(0, 4)):
+            if matrix[row + 1][column] == 0 and matrix[row][column] != 0:
+                matrix[row + 1][column] = matrix[row][column]
+                matrix[row][column] = 0
+                action += 1
+                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row + 1][column] == matrix[row][column] and matrix[row + 1][column] != 0 
+                and [row + 1, column] not in occupied_block and [row, column] not in occupied_block):
+                        matrix[row + 1][column] = matrix[row + 1][column] + matrix[row][column]
+                        matrix[row][column] = 0
+                        occupied_block.append([row + 1, column])
+                        temp_score += matrix[row + 1][column]
+                        action += 1
+                        myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
+    return [action,temp_score]
 
 
-def a_reaction():
+def left_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+   
     while i < 3:
-        for x in range(1, 4):
-            if row_1[x - 1] == 0 and row_1[x] != 0:
-                row_1[x - 1] = row_1[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[x] = 0
-                action = action + 1
-            elif row_1[x - 1] == row_1[x] and row_1[x - 1] != 0 and [1, x] not in occupied_block and [1, x - 1] not in occupied_block:
-                row_1[x - 1] = row_1[x - 1] + row_1[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[x] = 0
-                occupied_block.append([1, x - 1])
-                current_score = current_score + row_1[x - 1]
-                action = action + 1
-
-            if row_2[x - 1] == 0 and row_2[x] != 0:
-                row_2[x - 1] = row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                action = action + 1
-            elif row_2[x - 1] == row_2[x] and row_2[x - 1] != 0 and [2, x] not in occupied_block and [2, x - 1] not in occupied_block:
-                row_2[x - 1] = row_2[x - 1] + row_2[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[x] = 0
-                occupied_block.append([2, x - 1])
-                current_score = current_score + row_2[x - 1]
-                action = action + 1
-
-            if row_3[x - 1] == 0 and row_3[x] != 0:
-                row_3[x - 1] = row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                action = action + 1
-            elif row_3[x - 1] == row_3[x] and row_3[x - 1] != 0 and [3, x] not in occupied_block and [3, x - 1] not in occupied_block:
-                row_3[x - 1] = row_3[x - 1] + row_3[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[x] = 0
-                occupied_block.append([3, x - 1])
-                current_score = current_score + row_3[x - 1]
-                action = action + 1
-
-            if row_4[x - 1] == 0 and row_4[x] != 0:
-                row_4[x - 1] = row_4[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[x] = 0
-                action = action + 1
-            elif row_4[x - 1] == row_4[x] and row_4[x - 1] != 0 and [4, x] not in occupied_block and [4, x - 1] not in occupied_block:
-                row_4[x - 1] = row_4[x - 1] + row_4[x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[x] = 0
-                occupied_block.append([4, x - 1])
-                current_score = current_score + row_4[x - 1]
-                action = action + 1
+        for row, column in itertools.product(range(0, 4), range(1, 4)):
+            if matrix[row][column - 1] == 0 and matrix[row][column] !=0:
+                matrix[row][column - 1] = matrix[row][column]
+                matrix[row][column] = 0
+                action += 1
+                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row][column - 1] == matrix[row][column] and matrix[row][column - 1] != 0 
+                and [row, column] not in occupied_block and [row, column - 1] not in occupied_block):
+                    matrix[row][column - 1] = matrix[row][column - 1] + matrix[row][column]
+                    matrix[row][column] = 0
+                    occupied_block.append([row, column - 1])
+                    temp_score += matrix[row][column - 1]
+                    action += 1
+                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
+    return [action,temp_score]
 
 
-def d_reaction():
+def right_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+  
     while i < 3:
-        for x in range(0, 3):
-            if row_1[3 - x] == 0 and row_1[2 - x] != 0:
-                row_1[3 - x] = row_1[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[2 - x] = 0
-                action = action + 1
-            elif row_1[3 - x] == row_1[2 - x] and row_1[3 - x] != 0 and [1, 3 - x] not in occupied_block and [1, 2 - x] not in occupied_block:
-                row_1[3 - x] = row_1[3 - x] + row_1[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_1[2 - x] = 0
-                occupied_block.append([1, 3 - x])
-                current_score = current_score + row_1[3 - x]
-                action = action + 1
-
-            if row_2[3 - x] == 0 and row_2[2 - x] != 0:
-                row_2[3 - x] = row_2[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[2 - x] = 0
-                action = action + 1
-            elif row_2[3 - x] == row_2[2 - x] and row_2[3 - x] != 0 and [2, 2 - x] not in occupied_block and [2, 3 - x] not in occupied_block:
-                row_2[3 - x] = row_2[3 - x] + row_2[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_2[2 - x] = 0
-                occupied_block.append([2, 3 - x])
-                current_score = current_score + row_2[3 - x]
-                action = action + 1
-
-            if row_3[3 - x] == 0 and row_3[2 - x] != 0:
-                row_3[3 - x] = row_3[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[2 - x] = 0
-                action = action + 1
-            elif row_3[3 - x] == row_3[2 - x] and row_3[3 - x] != 0 and [3, 2 - x] not in occupied_block and [3, 3 - x] not in occupied_block:
-                row_3[3 - x] = row_3[3 - x] + row_3[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_3[2 - x] = 0
-                occupied_block.append([3, 3 - x])
-                current_score = current_score + row_3[3 - x]
-                action = action + 1
-
-            if row_4[3 - x] == 0 and row_4[2 - x] != 0:
-                row_4[3 - x] = row_4[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[2 - x] = 0
-                action = action + 1
-            elif row_4[3 - x] == row_4[2 - x] and row_4[3 - x] != 0 and [4, 2 - x] not in occupied_block and [4, 3 - x] not in occupied_block:
-                row_4[3 - x] = row_4[3 - x] + row_4[2 - x]
-                myprints.print_table(row_1, row_2, row_3, row_4, current_score)
-                time.sleep(0.01)
-                os.system("cls" if os.name == "nt" else "clear")
-                row_4[2 - x] = 0
-                occupied_block.append([4, 3 - x])
-                current_score = current_score + row_4[3 - x]
-                action = action + 1
+        for row, column in itertools.product(range(0, 4), range(0, 3)):
+            if matrix[row][3 - column] == 0 and matrix[row][2 - column] !=0:
+                matrix[row][3 - column] = matrix[row][2 - column]
+                matrix[row][2 - column] = 0
+                action += 1
+                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row][3 - column] == matrix[row][2 - column] and matrix[row][3 - column] != 0 
+                and [row, 3 - column] not in occupied_block and [row, 2 - column] not in occupied_block):
+                    matrix[row][3 - column] = matrix[row][3 - column] + matrix[row][2 - column]
+                    matrix[row][2 - column] = 0
+                    occupied_block.append([row, 3 - column])
+                    temp_score += matrix[row][3 - column]
+                    action += 1
+                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
+    return [action,temp_score]
 
 
 q = 0
@@ -415,13 +231,13 @@ while q < 1:
             if user_input == "q":
                 break
             if user_input == "w":
-                result_list = reaction.up_reaction(matrix,action,temp_score)
+                result_list = up_reaction(matrix,action,temp_score)
             elif user_input == "s":
-                result_list = reaction.down_reaction(matrix,action,temp_score)
+                result_list = down_reaction(matrix,action,temp_score)
             elif user_input == "a":
-                result_list = reaction.left_reaction(matrix,action,temp_score)
+                result_list = left_reaction(matrix,action,temp_score)
             elif user_input == "d":
-                result_list = reaction.right_reaction(matrix,action,temp_score)
+                result_list = right_reaction(matrix,action,temp_score)
             else:
                 print("Press a valid key")
                 continue

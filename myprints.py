@@ -1,3 +1,6 @@
+import time
+import os
+
 def welcome_print():
     with open("welcome_print.txt", "r") as opened_txt:
         welcome_print = opened_txt.read()
@@ -44,3 +47,8 @@ def print_table(row_1, row_2, row_3, row_4, current_score):
     print("---------------------------------")
     print(print_row_4)
     print("Score = ", current_score)
+
+def table_sleep_print(row_1, row_2, row_3, row_4, current_score):
+    print_table(row_1, row_2, row_3, row_4, current_score)
+    time.sleep(0.01)
+    os.system("cls" if os.name == "nt" else "clear")
