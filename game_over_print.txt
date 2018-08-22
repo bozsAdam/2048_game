@@ -1,0 +1,8 @@
+.g8"""bgd       db      `7MMM.     ,MMF'`7MM"""YMM        .g8""8q.`7MMF'   `7MF'`7MM"""YMM  `7MM"""Mq.
+    .dP'     `M      ;MM:       MMMb    dPMM    MM    `7      .dP'    `YM.`MA     ,V    MM    `7    MM   `MM.
+    dM'       `     ,V^MM.      M YM   ,M MM    MM   d        dM'      `MM VM:   ,V     MM   d      MM   ,M9
+    MM             ,M  `MM      M  Mb  M' MM    MMmmMM        MM        MM  MM.  M'     MMmmMM      MMmmdM9
+    MM.    `7MMF'  AbmmmqMA     M  YM.P'  MM    MM   Y  ,     MM.      ,MP  `MM A'      MM   Y  ,   MM  YM.
+    `Mb.     MM   A'     VML    M  `YM'   MM    MM     ,M     `Mb.    ,dP'   :MM;       MM     ,M   MM   `Mb.
+    `"bmmmdPY .AMA.   .AMMA..JML. `'  .JMML..JMMmmmmMMM       `"bmmd"'      VF      .JMMmmmmMMM .JMML. .JMM.
+                                But don't worry, you can always start the game again.

@@ -6,10 +6,10 @@ import getch as z
 import myprints
 
 
-row_1 = [2, 2, 2, 2]
-row_2 = [4, 4, 4, 8]
-row_3 = [4, 4, 4, 8]
-row_4 = [4, 4, 4, 8]
+row_1 = [2, 16, 2, 0]
+row_2 = [4, 8, 4, 0]
+row_3 = [8, 4, 8, 0]
+row_4 = [16, 2, 16, 0]
 
 g = 0
 name = ("")
