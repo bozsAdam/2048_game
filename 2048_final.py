@@ -4,6 +4,7 @@ import time
 import itertools
 import getch as z
 import myprints
+import csv
 
 
 row_1 = [0, 0, 0, 0]
@@ -18,6 +19,45 @@ action = 0
 current_score = 0
 temp_score = 0
 matrix = [row_1, row_2, row_3, row_4]
+
+
+def save_the_game():
+    with open("save_game.csv", "w", newline="") as save_game_csv:
+        thewriter = csv.writer(save_game_csv)
+        for item in row_1:
+            thewriter.writerow(str(item))
+        for item in row_2:
+            thewriter.writerow(str(item))
+        for item in row_3:
+            thewriter.writerow(str(item))
+        for item in row_4:
+            thewriter.writerow(str(item))
+
+
+def open_save_game():
+    opened_rows = []
+    with open("save_game.csv", "r") as save_game_csv:
+        thereader = csv.reader(save_game_csv)
+        thereader = list(thereader)
+        for x in range(0, (len(thereader))):
+            opened_rows.append(thereader[x][0])
+
+    for x in range(0, (len(opened_rows))):
+        opened_rows[x] = int(opened_rows[x])
+
+    opened_row_1 = opened_rows[0:4]
+    opened_row_2 = opened_rows[4:8]
+    opened_row_3 = opened_rows[8:12]
+    opened_row_4 = opened_rows[12:16]
+    for x in range(0, 4):
+        row_1[x] = opened_row_1[x]
+    for x in range(0, 4):
+        row_2[x] = opened_row_2[x]
+    for x in range(0, 4):
+        row_3[x] = opened_row_3[x]
+    for x in range(0, 4):
+        row_4[x] = opened_row_4[x]
+
 
 def read_high_score():
     with open("high_score.txt", "r") as opened_file:
@@ -101,100 +141,113 @@ def number_generator():
             rand_4 = random.choice(nulls_places[3])
             row_4[rand_4] = random.choice(two_or_four)
 
-def up_reaction(matrix,action,temp_score):
+
+def up_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
-    
+
     while i < 3:
         for row, column in itertools.product(range(1, 4), range(0, 4)):
             if matrix[row - 1][column] == 0 and matrix[row][column] != 0:
                 matrix[row - 1][column] = matrix[row][column]
                 matrix[row][column] = 0
                 action += 1
-                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
-            elif (matrix[row - 1][column] == matrix[row][column] and matrix[row - 1][column] != 0 
-                and [row - 1, column] not in occupied_block and [row, column] not in occupied_block):
-                    matrix[row - 1][column] = matrix[row - 1][column] + matrix[row][column]
-                    matrix[row][column] = 0
-                    occupied_block.append([row - 1, column])
-                    temp_score +=  matrix[row - 1][column]
-                    action += 1
-                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row - 1][column] == matrix[row][column] and matrix[row - 1][column] != 0
+                  and [row - 1, column] not in occupied_block and [row, column] not in occupied_block):
+                matrix[row - 1][column] = matrix[row -
+                                                 1][column] + matrix[row][column]
+                matrix[row][column] = 0
+                occupied_block.append([row - 1, column])
+                temp_score += matrix[row - 1][column]
+                action += 1
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
-    return [action,temp_score]
+    return [action, temp_score]
 
 
-def down_reaction(matrix,action,temp_score):
+def down_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
-    
+
     while i < 3:
         for row, column in itertools.product(range(0, 3), range(0, 4)):
             if matrix[row + 1][column] == 0 and matrix[row][column] != 0:
                 matrix[row + 1][column] = matrix[row][column]
                 matrix[row][column] = 0
                 action += 1
-                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
-            elif (matrix[row + 1][column] == matrix[row][column] and matrix[row + 1][column] != 0 
-                and [row + 1, column] not in occupied_block and [row, column] not in occupied_block):
-                        matrix[row + 1][column] = matrix[row + 1][column] + matrix[row][column]
-                        matrix[row][column] = 0
-                        occupied_block.append([row + 1, column])
-                        temp_score += matrix[row + 1][column]
-                        action += 1
-                        myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row + 1][column] == matrix[row][column] and matrix[row + 1][column] != 0
+                  and [row + 1, column] not in occupied_block and [row, column] not in occupied_block):
+                matrix[row + 1][column] = matrix[row +
+                                                 1][column] + matrix[row][column]
+                matrix[row][column] = 0
+                occupied_block.append([row + 1, column])
+                temp_score += matrix[row + 1][column]
+                action += 1
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
-    return [action,temp_score]
+    return [action, temp_score]
 
 
-def left_reaction(matrix,action,temp_score):
+def left_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
-   
+
     while i < 3:
         for row, column in itertools.product(range(0, 4), range(1, 4)):
-            if matrix[row][column - 1] == 0 and matrix[row][column] !=0:
+            if matrix[row][column - 1] == 0 and matrix[row][column] != 0:
                 matrix[row][column - 1] = matrix[row][column]
                 matrix[row][column] = 0
                 action += 1
-                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
-            elif (matrix[row][column - 1] == matrix[row][column] and matrix[row][column - 1] != 0 
-                and [row, column] not in occupied_block and [row, column - 1] not in occupied_block):
-                    matrix[row][column - 1] = matrix[row][column - 1] + matrix[row][column]
-                    matrix[row][column] = 0
-                    occupied_block.append([row, column - 1])
-                    temp_score += matrix[row][column - 1]
-                    action += 1
-                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row][column - 1] == matrix[row][column] and matrix[row][column - 1] != 0
+                  and [row, column] not in occupied_block and [row, column - 1] not in occupied_block):
+                matrix[row][column - 1] = matrix[row][column - 1] + \
+                    matrix[row][column]
+                matrix[row][column] = 0
+                occupied_block.append([row, column - 1])
+                temp_score += matrix[row][column - 1]
+                action += 1
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
-    return [action,temp_score]
+    return [action, temp_score]
 
 
-def right_reaction(matrix,action,temp_score):
+def right_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
-  
+
     while i < 3:
         for row, column in itertools.product(range(0, 4), range(0, 3)):
-            if matrix[row][3 - column] == 0 and matrix[row][2 - column] !=0:
+            if matrix[row][3 - column] == 0 and matrix[row][2 - column] != 0:
                 matrix[row][3 - column] = matrix[row][2 - column]
                 matrix[row][2 - column] = 0
                 action += 1
-                myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
-            elif (matrix[row][3 - column] == matrix[row][2 - column] and matrix[row][3 - column] != 0 
-                and [row, 3 - column] not in occupied_block and [row, 2 - column] not in occupied_block):
-                    matrix[row][3 - column] = matrix[row][3 - column] + matrix[row][2 - column]
-                    matrix[row][2 - column] = 0
-                    occupied_block.append([row, 3 - column])
-                    temp_score += matrix[row][3 - column]
-                    action += 1
-                    myprints.table_sleep_print(row_1, row_2, row_3, row_4, current_score)
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
+            elif (matrix[row][3 - column] == matrix[row][2 - column] and matrix[row][3 - column] != 0
+                  and [row, 3 - column] not in occupied_block and [row, 2 - column] not in occupied_block):
+                matrix[row][3 - column] = matrix[row][3 -
+                                                      column] + matrix[row][2 - column]
+                matrix[row][2 - column] = 0
+                occupied_block.append([row, 3 - column])
+                temp_score += matrix[row][3 - column]
+                action += 1
+                myprints.table_sleep_print(
+                    row_1, row_2, row_3, row_4, current_score)
 
         i = i + 1
-    return [action,temp_score]
+    return [action, temp_score]
 
 
 quit = False
@@ -203,7 +256,7 @@ while quit is not True:
     os.system("cls" if os.name == "nt" else "clear")
     myprints.welcome_print()
     start_input = input(
-        "Press 'h' for high scores, 'q' to quit or any other key to begin:")
+        "START THE GAME: any key \nFOR HIGH SCORES: h \nFOR LOADING A SAVED GAME: s \nTO QUIT: q \n")
     if start_input == "q":
         quit = True
     elif start_input == "h":
@@ -211,14 +264,17 @@ while quit is not True:
         back_wards = input("Press any key to go back to the main menu:")
 
     else:
-        input_reader = z.Getch()
-        name = input("Please enter your name:")
         clear_table()
         number_generator()
         number_generator()
+        if start_input == "s":
+            open_save_game()
+        input_reader = z.Getch()
+        name = input("Please enter your name:")
         current_score = 0
         game_over = False
         os.system("cls" if os.name == "nt" else "clear")
+        print("ANYTIME IF YOU'RE IN GAME DON'T FORGET \nTHAT YOU CAN SAVE IT BY HITTING THE 'O' KEY")
         while game_over is not True:
             action = 0
             myprints.print_table(row_1, row_2, row_3, row_4, current_score)
@@ -228,13 +284,16 @@ while quit is not True:
             if user_input == "q":
                 break
             if user_input == "w":
-                result_list = up_reaction(matrix,action,temp_score)
+                result_list = up_reaction(matrix, action, temp_score)
             elif user_input == "s":
-                result_list = down_reaction(matrix,action,temp_score)
+                result_list = down_reaction(matrix, action, temp_score)
             elif user_input == "a":
-                result_list = left_reaction(matrix,action,temp_score)
+                result_list = left_reaction(matrix, action, temp_score)
             elif user_input == "d":
-                result_list = right_reaction(matrix,action,temp_score)
+                result_list = right_reaction(matrix, action, temp_score)
+            elif user_input == "o":
+                save_the_game()
+                break
             else:
                 print("Press a valid key")
                 continue
