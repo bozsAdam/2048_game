@@ -3,7 +3,8 @@ import os
 
 def welcome_print():
     with open("welcome_print.txt", "r") as opened_txt:
-        welcome_print = opened_txt.read()
+        welcome_print = opened_txt.read()       
+        print("\033[1;32;40m")
         print(welcome_print)
 
 def game_over_print():
