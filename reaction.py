@@ -59,11 +59,10 @@ def print_table():
     print("Score = ", current_score)
 
 
-def up_reaction():
+def up_reaction(matrix,action,current_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+    
     while i < 3:
         for row, column in itertools.product(range(1, 4), range(0, 4)):
             if matrix[row - 1][column] == 0 and matrix[row][column] != 0:
@@ -81,6 +80,7 @@ def up_reaction():
                     table_sleep_print()
 
         i = i + 1
+    return [action,current_score]
 
 
 def down_reaction():
