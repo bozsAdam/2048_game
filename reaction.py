@@ -13,7 +13,7 @@ name = ("")
 action = 0
 
 
-current_score = 0
+temp_score = 0
 
 matrix = [row_1, row_2, row_3, row_4]
 
@@ -56,10 +56,10 @@ def print_table():
     print(print_row_3)
     print("---------------------------------")
     print(print_row_4)
-    print("Score = ", current_score)
+    print("Score = ", temp_score)
 
 
-def up_reaction(matrix,action,current_score):
+def up_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
     
@@ -75,19 +75,18 @@ def up_reaction(matrix,action,current_score):
                     matrix[row - 1][column] = matrix[row - 1][column] + matrix[row][column]
                     matrix[row][column] = 0
                     occupied_block.append([row - 1, column])
-                    current_score = current_score + matrix[row - 1][column]
+                    temp_score +=  matrix[row - 1][column]
                     action += 1
                     table_sleep_print()
 
         i = i + 1
-    return [action,current_score]
+    return [action,temp_score]
 
 
-def down_reaction():
+def down_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+    
     while i < 3:
         for row, column in itertools.product(range(0, 3), range(0, 4)):
             if matrix[row + 1][column] == 0 and matrix[row][column] != 0:
@@ -100,18 +99,18 @@ def down_reaction():
                         matrix[row + 1][column] = matrix[row + 1][column] + matrix[row][column]
                         matrix[row][column] = 0
                         occupied_block.append([row + 1, column])
-                        current_score = current_score + matrix[row + 1][column]
+                        temp_score += matrix[row + 1][column]
                         action += 1
                         table_sleep_print()
 
         i = i + 1
+    return [action,temp_score]
 
 
-def right_reaction():
+def left_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+   
     while i < 3:
         for row, column in itertools.product(range(0, 4), range(1, 4)):
             if matrix[row][column - 1] == 0 and matrix[row][column] !=0:
@@ -124,18 +123,18 @@ def right_reaction():
                     matrix[row][column - 1] = matrix[row][column - 1] + matrix[row][column]
                     matrix[row][column] = 0
                     occupied_block.append([row, column - 1])
-                    current_score = current_score + matrix[row][column - 1]
+                    temp_score += matrix[row][column - 1]
                     action += 1
                     table_sleep_print()
 
         i = i + 1
+    return [action,temp_score]
 
 
-def left_reaction():
+def right_reaction(matrix,action,temp_score):
     i = 0
     occupied_block = []
-    global current_score
-    global action
+  
     while i < 3:
         for row, column in itertools.product(range(0, 4), range(0, 3)):
             if matrix[row][3 - column] == 0 and matrix[row][2 - column] !=0:
@@ -148,11 +147,12 @@ def left_reaction():
                     matrix[row][3 - column] = matrix[row][3 - column] + matrix[row][2 - column]
                     matrix[row][2 - column] = 0
                     occupied_block.append([row, 3 - column])
-                    current_score = current_score + matrix[row][3 - column]
+                    temp_score += matrix[row][3 - column]
                     action += 1
                     table_sleep_print()
 
         i = i + 1
+    return [action,temp_score]
 '''
 print_table()
 d_reaction()
