@@ -4,6 +4,7 @@ import time
 import itertools
 import getch as z
 import myprints
+import reaction
 
 
 row_1 = [2, 2, 2, 2]
@@ -17,7 +18,8 @@ action = 0
 
 
 current_score = 0
-
+temp_score = 0
+matrix = [row_1, row_2, row_3, row_4]
 
 def read_high_score():
     with open("high_score.txt", "r") as opened_file:
@@ -413,16 +415,18 @@ while q < 1:
             if user_input == "q":
                 break
             if user_input == "w":
-                w_reaction()
+                result_list = reaction.up_reaction(matrix,action,temp_score)
             elif user_input == "s":
-                s_reaction()
+                result_list = reaction.down_reaction(matrix,action,temp_score)
             elif user_input == "a":
-                a_reaction()
+                result_list = reaction.left_reaction(matrix,action,temp_score)
             elif user_input == "d":
-                d_reaction()
+                result_list = reaction.right_reaction(matrix,action,temp_score)
             else:
                 print("Press a valid key")
                 continue
+            action = result_list[0]
+            current_score += result_list[1]
 
             if action > 0:
                 number_generator()
