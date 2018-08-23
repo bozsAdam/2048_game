@@ -22,8 +22,8 @@ matrix = [row_1, row_2, row_3, row_4]
 
 
 def save_the_game():
-    with open("save_game.csv", "w", newline="") as save_game_csv:
-        thewriter = csv.writer(save_game_csv)
+    with open("save_game.csv", "w", newline='') as save_game_csv:
+        thewriter = csv.writer(save_game_csv,delimiter=" ")
         for item in row_1:
             thewriter.writerow(str(item))
         for item in row_2:
@@ -32,6 +32,8 @@ def save_the_game():
             thewriter.writerow(str(item))
         for item in row_4:
             thewriter.writerow(str(item))
+        thewriter.writerow(str(current_score))
+        thewriter.writerow(name)
 
 
 def open_save_game():
@@ -40,9 +42,10 @@ def open_save_game():
         thereader = csv.reader(save_game_csv)
         thereader = list(thereader)
         for x in range(0, (len(thereader))):
+            thereader[x][0] = thereader[x][0].replace(" ","")
             opened_rows.append(thereader[x][0])
 
-    for x in range(0, (len(opened_rows))):
+    for x in range(0, ((len(opened_rows)-1))):
         opened_rows[x] = int(opened_rows[x])
 
     opened_row_1 = opened_rows[0:4]
@@ -57,7 +60,8 @@ def open_save_game():
         row_3[x] = opened_row_3[x]
     for x in range(0, 4):
         row_4[x] = opened_row_4[x]
-
+    current_score = opened_rows[16]
+    name = opened_rows[17]
 
 def read_high_score():
     with open("high_score.txt", "r") as opened_file:
@@ -269,12 +273,12 @@ while quit is not True:
         number_generator()
         if start_input == "s":
             open_save_game()
-        input_reader = z.Getch()
-        name = input("Please enter your name:")
-        current_score = 0
+        if start_input != "s":
+            current_score = 0
+            name = input("Please enter your name:")
+        input_reader = z.Getch()       
         game_over = False
         os.system("cls" if os.name == "nt" else "clear")
-        print("ANYTIME IF YOU'RE IN GAME DON'T FORGET \nTHAT YOU CAN SAVE IT BY HITTING THE 'O' KEY")
         while game_over is not True:
             action = 0
             myprints.print_table(row_1, row_2, row_3, row_4, current_score)

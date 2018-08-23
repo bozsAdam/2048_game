@@ -40,6 +40,7 @@ def print_table(row_1, row_2, row_3, row_4, current_score):
     print_row_3 = "  | ".join('{:4}'.format(item) for item in p_row_3)
     print_row_4 = "  | ".join('{:4}'.format(item) for item in p_row_4)
 
+    print("ANYTIME IF YOU'RE IN GAME DON'T FORGET \nTHAT YOU CAN SAVE IT BY HITTING THE 'O' KEY")
     print(print_row_1)
     print("---------------------------------")
     print(print_row_2)
