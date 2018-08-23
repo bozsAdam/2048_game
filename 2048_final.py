@@ -64,28 +64,12 @@ def open_save_game(current_score,name):
     return [current_score,name]
 
 
-def read_high_score():
-    with open("high_score.txt", "r") as opened_file:
-        outprinted_txt = opened_file.read()
-        print(outprinted_txt)
-
-
 def clear_table():
     for x in range(0, 4):
         row_1[x] = 0
         row_2[x] = 0
         row_3[x] = 0
         row_4[x] = 0
-
-
-def txt_save():
-    open_text=open("high_score.txt","a+")
-    high_score = str(current_score)
-    open_text.write("\n")
-    open_text.write(name)
-    open_text.write(":")
-    open_text.write(high_score)
-    open_text.close()
 
 
 def txt_write(name, highscore, current_score):
@@ -149,7 +133,6 @@ def check_if_gameover(matrix):
         if matrix[y][x] == matrix[y - 1][x]:
             gameover_value = gameover_value + 1
     if gameover_value == 0 and 0 not in check_zero:
-        txt_save()
         myprints.print_table(row_1, row_2, row_3, row_4, current_score)
         myprints.game_over_print()
         time.sleep(3)
@@ -362,11 +345,7 @@ while quit is not True:
                     if name in dict.keys(highscore_dict):
                         bigger = checking_high_score(name, "high_score.txt", current_score)
                         if bigger is True:
-                            print('its in')
                             txt_write(name,"high_score.txt",current_score)
-                        else:
-                            print('its in but smaller')
                     else:
-                        print('its not in')
                         txt_write(name,"high_score.txt",current_score)
                     game_over = True

@@ -1,8 +1,4 @@
 
-:648
-Laci:432
-:220
-Laci:480
-Adam:724
-Laci:660
-Adam:616
+
+Laci:756
+Adam:1396
