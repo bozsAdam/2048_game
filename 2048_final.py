@@ -69,15 +69,6 @@ def read_high_score():
         print(outprinted_txt)
 
 
-def txt_save():
-    with open("high_score.txt", "a+") as open_text:
-        high_score = str(current_score)
-        open_text.write("\n")
-        open_text.write(name)
-        open_text.write(":")
-        open_text.write(high_score)
-
-
 def clear_table():
     for x in range(0, 4):
         row_1[x] = 0
@@ -86,6 +77,58 @@ def clear_table():
         row_4[x] = 0
 
 
+def txt_save():
+    open_text=open("high_score.txt","a+")
+    high_score = str(current_score)
+    open_text.write("\n")
+    open_text.write(name)
+    open_text.write(":")
+    open_text.write(high_score)
+    open_text.close()
+
+
+def txt_write(name, highscore, current_score):
+    
+    with open(highscore, "a+") as open_text:
+        high_score = str(current_score)
+        open_text.write("\n")
+        open_text.write(name)
+        open_text.write(":")
+        open_text.write(high_score)
+      
+
+def read_high_score():
+    with open("high_score.txt", 'r') as document:
+        highscore_dict = {}
+        for line in document:
+            if line.strip():  # non-empty line?
+                key, value = line.split(':', 1)  # None means 'all whitespace', the default
+                highscore_dict[key] = int(value.split()[0])
+    return highscore_dict
+
+
+def checking_high_score(name, highscore, current_score):
+    if highscore_dict.get(name) < current_score:
+        with open(highscore, "r") as r:
+            lines = r.readlines()
+        with open(highscore, "w") as w:
+            for line in lines:
+                if name not in line:
+                    w.write(line)
+        print('its bigger')
+        return True
+    else:
+        print('smaller')
+    print(highscore_dict)
+
+
+def print_highscore(dictionary):
+    max_length_keys = 2 + max(map(len, dictionary))
+    max_length_values = 5 + len(str(max(dictionary.values())))
+    for k, v in sorted(dictionary.items(),
+                           key=lambda x: x[1], reverse=True):
+        print("{:>{max_length_keys}} {:>{max_length_values}}".format(
+                k, v, max_length_keys=max_length_keys, max_length_values=max_length_values))
 def check_if_gameover(matrix):
 
     check_zero = []
@@ -264,7 +307,9 @@ while quit is not True:
     if start_input == "q":
         quit = True
     elif start_input == "h":
-        read_high_score()
+        os.system("cls" if os.name == "nt" else "clear")
+        highscore_dict = read_high_score()
+        print_highscore(highscore_dict)
         back_wards = input("Press any key to go back to the main menu:")
 
     else:
@@ -306,4 +351,17 @@ while quit is not True:
 
             if action > 0:
                 number_generator()
-                game_over = check_if_gameover(matrix)
+                game_over_save = check_if_gameover(matrix)
+                if game_over_save is True:
+                    highscore_dict = read_high_score()
+                    if name in dict.keys(highscore_dict):
+                        bigger = checking_high_score(name, "high_score.txt", current_score)
+                        if bigger is True:
+                            print('its in')
+                            txt_write(name,"high_score.txt",current_score)
+                        else:
+                            print('its in but smaller')
+                    else:
+                        print('its not in')
+                        txt_write(name,"high_score.txt",current_score)
+                    game_over = True
