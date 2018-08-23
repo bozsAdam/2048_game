@@ -14,11 +14,10 @@ row_4 = [0, 0, 0, 0]
 
 name = ("")
 action = 0
-
-
 current_score = 0
 temp_score = 0
 matrix = [row_1, row_2, row_3, row_4]
+quit = False
 
 
 def save_the_game():
@@ -63,6 +62,7 @@ def open_save_game(current_score,name):
     current_score = opened_rows[16]
     name = opened_rows[17]
     return [current_score,name]
+
 
 def read_high_score():
     with open("high_score.txt", "r") as opened_file:
@@ -130,6 +130,8 @@ def print_highscore(dictionary):
                            key=lambda x: x[1], reverse=True):
         print("{:>{max_length_keys}} {:>{max_length_values}}".format(
                 k, v, max_length_keys=max_length_keys, max_length_values=max_length_values))
+
+
 def check_if_gameover(matrix):
 
     check_zero = []
@@ -298,7 +300,7 @@ def right_reaction(matrix, action, temp_score):
     return [action, temp_score]
 
 
-quit = False
+
 
 while quit is not True:
     os.system("cls" if os.name == "nt" else "clear")
