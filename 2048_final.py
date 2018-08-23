@@ -19,7 +19,7 @@ temp_score = 0
 matrix = [row_1, row_2, row_3, row_4]
 quit = False
 
-
+# function for saving game as csv file (table, name, score)
 def save_the_game():
     with open("save_game.csv", "w", newline='') as save_game_csv:
         thewriter = csv.writer(save_game_csv,delimiter=" ")
@@ -34,7 +34,7 @@ def save_the_game():
         thewriter.writerow(str(current_score))
         thewriter.writerow(name)
 
-
+# function for continuing from a saved game
 def open_save_game(current_score,name):
     opened_rows = []
     with open("save_game.csv", "r") as save_game_csv:
@@ -63,7 +63,7 @@ def open_save_game(current_score,name):
     name = opened_rows[17]
     return [current_score,name]
 
-
+# function for starting with a matrix full of zeroes
 def clear_table():
     for x in range(0, 4):
         row_1[x] = 0
@@ -71,7 +71,7 @@ def clear_table():
         row_3[x] = 0
         row_4[x] = 0
 
-
+# function for saving player name and score in a txt file
 def txt_write(name, highscore, current_score):
     
     with open(highscore, "a+") as open_text:
@@ -81,7 +81,7 @@ def txt_write(name, highscore, current_score):
         open_text.write(":")
         open_text.write(high_score)
       
-
+# reading highscore.txt into a dictionary
 def read_high_score():
     with open("high_score.txt", 'r') as document:
         highscore_dict = {}
@@ -91,7 +91,7 @@ def read_high_score():
                 highscore_dict[key] = int(value.split()[0])
     return highscore_dict
 
-
+# function for checking if a name exits in the highscore file
 def checking_high_score(name, highscore, current_score):
     if highscore_dict.get(name) < current_score:
         with open(highscore, "r") as r:
@@ -100,13 +100,9 @@ def checking_high_score(name, highscore, current_score):
             for line in lines:
                 if name not in line:
                     w.write(line)
-        print('its bigger')
         return True
-    else:
-        print('smaller')
-    print(highscore_dict)
 
-
+# function for printing highscore dictionary
 def print_highscore(dictionary):
     max_length_keys = 2 + max(map(len, dictionary))
     max_length_values = 5 + len(str(max(dictionary.values())))
@@ -115,7 +111,7 @@ def print_highscore(dictionary):
         print("{:>{max_length_keys}} {:>{max_length_values}}".format(
                 k, v, max_length_keys=max_length_keys, max_length_values=max_length_values))
 
-
+# function for checking game over condition
 def check_if_gameover(matrix):
 
     check_zero = []
@@ -138,7 +134,7 @@ def check_if_gameover(matrix):
         time.sleep(3)
         return True
 
-
+# generates a 2 or 4 
 def number_generator():
     nulls_places = [[], [], [], []]
 
@@ -174,7 +170,7 @@ def number_generator():
             rand_4 = random.choice(nulls_places[3])
             row_4[rand_4] = random.choice(two_or_four)
 
-
+# up movement function
 def up_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
@@ -201,7 +197,7 @@ def up_reaction(matrix, action, temp_score):
         i = i + 1
     return [action, temp_score]
 
-
+# down movement function
 def down_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
@@ -228,7 +224,7 @@ def down_reaction(matrix, action, temp_score):
         i = i + 1
     return [action, temp_score]
 
-
+# left movement function
 def left_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
@@ -255,7 +251,7 @@ def left_reaction(matrix, action, temp_score):
         i = i + 1
     return [action, temp_score]
 
-
+# right movement function
 def right_reaction(matrix, action, temp_score):
     i = 0
     occupied_block = []
@@ -284,7 +280,7 @@ def right_reaction(matrix, action, temp_score):
 
 
 
-
+# the main function runs here
 while quit is not True:
     os.system("cls" if os.name == "nt" else "clear")
     myprints.welcome_print()
@@ -339,10 +335,10 @@ while quit is not True:
 
             if action > 0:
                 number_generator()
-                game_over_save = check_if_gameover(matrix)
+                game_over_save = check_if_gameover(matrix) # checking for end of game
                 if game_over_save is True:
                     highscore_dict = read_high_score()
-                    if name in dict.keys(highscore_dict):
+                    if name in dict.keys(highscore_dict): # if a name is already in the highscore list it checks for its score
                         bigger = checking_high_score(name, "high_score.txt", current_score)
                         if bigger is True:
                             txt_write(name,"high_score.txt",current_score)
