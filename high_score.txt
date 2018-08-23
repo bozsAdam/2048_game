@@ -5,3 +5,4 @@ Laci:432
 Laci:480
 Adam:724
 Laci:660
+Adam:616

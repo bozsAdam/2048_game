@@ -36,7 +36,7 @@ def save_the_game():
         thewriter.writerow(name)
 
 
-def open_save_game():
+def open_save_game(current_score,name):
     opened_rows = []
     with open("save_game.csv", "r") as save_game_csv:
         thereader = csv.reader(save_game_csv)
@@ -62,6 +62,7 @@ def open_save_game():
         row_4[x] = opened_row_4[x]
     current_score = opened_rows[16]
     name = opened_rows[17]
+    return [current_score,name]
 
 def read_high_score():
     with open("high_score.txt", "r") as opened_file:
@@ -317,7 +318,9 @@ while quit is not True:
         number_generator()
         number_generator()
         if start_input == "s":
-            open_save_game()
+            save_game_list=open_save_game(current_score,name)
+            current_score = save_game_list[0]
+            name = save_game_list[1]
         if start_input != "s":
             current_score = 0
             name = input("Please enter your name:")
